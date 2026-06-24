@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>SortQuest</title>
+
+  <link rel="icon" href="assets/images/app-icon.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="app">
+
+    <header class="top-bar">
+      <div class="brand" onclick="showScreen('splash')">
+        <img src="assets/images/app-icon.png" alt="" class="brand-icon" onerror="this.parentElement.classList.add('brand-fallback'); this.remove();">
+        <span>SortQuest</span>
+      </div>
+
+      <nav>
+        <button onclick="showScreen('splash')" class="nav-btn" title="Početna">🏠 Početna</button>
+        <button onclick="showScreen('learn')" class="nav-btn" title="Nauči algoritme">📚 Učenje</button>
+        <button onclick="showScreen('challenge')" class="nav-btn" title="Izazovi">⚡ Izazov</button>
+        <button onclick="showScreen('battle')" class="nav-btn" title="Borbe između algoritama">⚔️ Duel</button>
+        <button onclick="showScreen('leaderboard')" class="nav-btn" title="Rezultati">🏆 Rezultati</button>
+        <button onclick="showScreen('settings')" class="nav-btn" title="Postavke">⚙️ Postavke</button>
+        <button onclick="showScreen('help')" class="nav-btn" title="Pomoć">❓ Pomoć</button>
+      </nav>
+
+      <div class="sound-toggle">
+        <button id="soundToggleBtn" onclick="toggleSound()" class="icon-btn" title="Uključi/Isključi zvuk">🔊</button>
+      </div>
+    </header>
+
+    <main>
+      <!-- SPLASH -->
+      <section id="splash" class="screen active splash-screen">
+        <div class="splash-card">
+          <img src="assets/images/logo.png" alt="SortQuest logo" class="main-logo">
+
+          <h2>Algoritamska avantura</h2>
+
+          <p>
+            Nauči algoritme sortiranja kroz kratke lekcije, animacije korak-po-korak, mini izazove i poređenje algoritama.
+          </p>
+
+          <div class="hero-actions-grid" aria-label="Brzi početak">
+            <button onclick="showScreen('learn')" class="hero-action-card">
+              <strong>1. Gledaj animaciju</strong>
+              <span>Vizuelno prati poređenja, zamjene, pivot i sortirani dio.</span>
+            </button>
+            <button onclick="showScreen('challenge')" class="hero-action-card">
+              <strong>2. Vježbaj potez</strong>
+              <span>Odgovori šta algoritam radi u sljedećem koraku.</span>
+            </button>
+            <button onclick="showScreen('battle')" class="hero-action-card">
+              <strong>3. Uporedi algoritme</strong>
+              <span>Vidi koji algoritam ima manje koraka na istom nizu.</span>
+            </button>
+          </div>
+
+          <div class="learning-path">
+            <h3>🎓 Put učenja</h3>
+            <ol id="learningPathList">
+              <li>Bubble Sort</li>
+              <li>Selection Sort</li>
+              <li>Insertion Sort</li>
+              <li>Merge Sort</li>
+              <li>Quick Sort</li>
+            </ol>
+          </div>
+
+          <div class="splash-buttons">
+            <button onclick="showScreen('learn')" class="btn-primary">🚀 Počni učenje</button>
+            <button onclick="showScreen('help')" class="btn-secondary">📖 Uputstvo</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- LEARN -->
+      <section id="learn" class="screen learn-screen">
+        <div class="left-panel">
+          <h1>📚 Algoritmi sortiranja</h1>
+          <div class="learn-focus-strip" aria-label="Šta korisnik uči">
+            <span>👀 posmatraj</span>
+            <span>🧠 razumij korak</span>
+            <span>⏭️ vježbaj ručno</span>
+            <span>🏁 provjeri kvizom</span>
+          </div>
+
+          <div class="learn-settings">
+            <div class="settings-row">
+              <div class="control-group">
+                <label for="algorithmSelect">🎯 Algoritam:</label>
+                <select id="algorithmSelect" onchange="algorithmChanged()">
+                  <option value="bubble">Bubble Sort</option>
+                  <option value="selection">Selection Sort</option>
+                  <option value="insertion">Insertion Sort</option>
+                  <option value="merge">Merge Sort</option>
+                  <option value="quick">Quick Sort</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <label for="arraySizeSelect">📊 Broj elemenata:</label>
+                <select id="arraySizeSelect" onchange="newArray()">
+                  <option value="5">Vrlo malo (5)</option>
+                  <option value="8">Malo (8) - Preporučeno za početnike</option>
+                  <option value="12" selected>Srednje (12)</option>
+                  <option value="20">Veće (20)</option>
+                  <option value="30">Puno (30) - Napredni</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <label for="speedSelect">⚡ Brzina animacije:</label>
+                <select id="speedSelect" onchange="changeAnimationSpeed()">
+                  <option value="4000">🐢 Ultra spora (4s) - Najbolje za učenje</option>
+                  <option value="2000">🐌 Veoma spora (2s)</option>
+                  <option value="1200">Spora (1.2s)</option>
+                  <option value="700" selected>Normalna (0.7s)</option>
+                  <option value="400">Brza (0.4s)</option>
+                  <option value="200">⚡ Veoma brza (0.2s)</option>
+                </select>
+              </div>
+
+              <div class="control-group">
+                <label for="maxValueSelect">🎲 Raspon brojeva:</label>
+                <select id="maxValueSelect" onchange="newArray()">
+                  <option value="30">Mali (1-30)</option>
+                  <option value="50" selected>Srednji (1-50)</option>
+                  <option value="100">Veliki (1-100)</option>
+                  <option value="200">Veoma veliki (1-200)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="algorithm-info">
+            <span class="algorithm-icon-frame"><img id="algorithmIcon" src="assets/images/bubble-icon.png" alt="Algorithm icon"></span>
+
+            <div>
+              <h3 id="algorithmTitle">Bubble Sort</h3>
+              <p id="algorithmShortText">
+                Poredi susjedne elemente i veće pomjera ka kraju niza.
+              </p>
+            </div>
+          </div>
+
+          <div class="control-buttons animation-controls" aria-label="Kontrole animacije">
+            <button onclick="newArray()" class="btn-control" title="Kreiraj novi niz">🔄 Novi niz</button>
+            <button onclick="startAnimation()" class="btn-control btn-play" title="Pokreni animaciju">▶️ Start</button>
+            <button onclick="pauseAnimation()" class="btn-control btn-pause" title="Pauziraj">⏸️ Pauza</button>
+            <button onclick="stepForward()" class="btn-control btn-step" title="Korak naprijed">⏭️ Korak</button>
+            <button onclick="stepBackward()" class="btn-control btn-step-back" title="Korak nazad">⏮️ Nazad</button>
+            <button onclick="resetGame()" class="btn-control btn-reset" title="Resetuj">🔙 Reset</button>
+          </div>
+
+          <div id="arrayContainer" class="array-container"></div>
+
+          <div class="legend" aria-label="Legenda boja animacije">
+            <span><b class="dot compare-dot"></b> Poređenje</span>
+            <span><b class="dot swap-dot"></b> Zamjena</span>
+            <span><b class="dot sorted-dot"></b> Sortirano</span>
+            <span><b class="dot pivot-dot"></b> Pivot</span>
+            <span><b class="dot min-dot"></b> Trenutni minimum</span>
+            <span><b class="dot range-dot"></b> Podniz</span>
+          </div>
+
+          <div class="step-explanation">
+            <h3>🧠 Trenutni korak</h3>
+            <p id="stepExplanation">Pokreni animaciju da vidiš objašnjenje korak po korak.</p>
+          </div>
+
+          <div class="stats">
+            <div class="stat-item">
+              <span class="stat-label">Poređenja:</span>
+              <span class="stat-value" id="comparisons">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Zamjene:</span>
+              <span class="stat-value" id="swaps">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Korak:</span>
+              <span class="stat-value" id="stepCounter">0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Poeni:</span>
+              <span class="stat-value score-highlight" id="scoreBox">0</span>
+            </div>
+          </div>
+
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+            <span class="progress-text" id="progressText">0%</span>
+          </div>
+        </div>
+
+        <aside class="right-panel">
+          <div class="robot-box">
+            <img id="tutorImage" src="assets/images/tutor-neutral.png" alt="AI Tutor Sortko">
+            <h2>🤖 AI Tutor Sortko</h2>
+          </div>
+
+          <div id="tutorMessage" class="tutor-message">
+            Izaberi algoritam i klikni Start.
+          </div>
+
+          <div class="tutor-buttons">
+            <button onclick="showHint()" class="btn-secondary">💡 Hint</button>
+            <button onclick="explainAlgorithm()" class="btn-secondary">📖 Objasni</button>
+            <button onclick="explainLikeBeginner()" class="btn-secondary">👶 Objasni jednostavno</button>
+            <button onclick="showScreen('quiz')" class="btn-secondary">📝 Kviz</button>
+          </div>
+
+          <div class="complexity-section">
+            <h3>Vremenska složenost</h3>
+            <p id="complexityBox">Odaberi algoritam za prikaz složenosti.</p>
+          </div>
+
+          <div class="pseudocode-box">
+            <h3>📌 Pseudokod</h3>
+            <ol id="pseudoCodeList"></ol>
+          </div>
+
+          <div class="learning-tips">
+            <h3>💡 Savjeti za učenje</h3>
+            <ul id="learningTips">
+              <li>Počni sa manjim nizom</li>
+              <li>Koristi sporiju brzinu</li>
+              <li>Klikni "Korak" za detaljno praćenje</li>
+              <li>Čitaj tutor objašnjenja</li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+
+      <!-- CHALLENGE -->
+      <section id="challenge" class="screen challenge-screen">
+        <div class="full-panel compact-mode-panel challenge-panel">
+          <div class="compact-page-header challenge-page-header">
+            <span class="mode-icon-frame"><img src="assets/images/challenge-icon.png" class="title-icon compact-title-icon feature-title-icon" alt="Challenge ikonica"></span>
+            <div>
+              <h1>Izazov</h1>
+              <p>Kratka pitanja koja provjeravaju da li razumiješ sljedeći potez algoritma.</p>
+            </div>
+          </div>
+
+          <div class="challenge-purpose-grid">
+            <div class="challenge-purpose-card">
+              <strong>🎯 Šta radiš?</strong>
+              <span>Dobiješ mali primjer i biraš ispravan sljedeći korak algoritma.</span>
+            </div>
+            <div class="challenge-purpose-card">
+              <strong>💬 Povratna informacija</strong>
+              <span>Odmah vidiš zašto je odgovor tačan ili pogrešan.</span>
+            </div>
+            <div class="challenge-purpose-card">
+              <strong>🏅 Napredak</strong>
+              <span>Tačni odgovori donose poene i povećavaju streak.</span>
+            </div>
+          </div>
+
+          <div class="challenge-controls">
+            <div class="control-group">
+              <label for="challengeAlgo">Algoritam za vježbu:</label>
+              <select id="challengeAlgo">
+                <option value="current">Isti kao u Learn modu</option>
+                <option value="bubble">Bubble Sort</option>
+                <option value="selection">Selection Sort</option>
+                <option value="insertion">Insertion Sort</option>
+                <option value="merge">Merge Sort</option>
+                <option value="quick">Quick Sort</option>
+              </select>
+            </div>
+
+            <div class="control-group">
+              <label for="challengeDifficulty">Težina:</label>
+              <select id="challengeDifficulty">
+                <option value="easy" selected>Lagano</option>
+                <option value="normal">Normalno</option>
+                <option value="hard">Teže</option>
+              </select>
+            </div>
+
+            <button onclick="startChallenge()" class="btn-primary challenge-start-btn">🎯 Novi izazov</button>
+          </div>
+
+          <div id="challengeBox" class="content-box challenge-box">
+            Izaberi algoritam i težinu, pa klikni <b>Novi izazov</b>. Svako pitanje vježba jedan konkretan potez algoritma.
+          </div>
+        </div>
+      </section>
+
+      <!-- BATTLE -->
+      <section id="battle" class="screen battle-screen">
+        <div class="full-panel compact-mode-panel battle-panel">
+          <div class="compact-page-header">
+            <span class="mode-icon-frame"><img src="assets/images/battle-icon.png" class="title-icon compact-title-icon" alt="Battle ikonica"></span>
+            <div>
+              <h1>⚔️ Algorithm Battle</h1>
+              <p>Dva algoritma sortiraju isti niz. Osim pobjednika, vidiš i zašto je neko bio brži na tom tipu ulaza.</p>
+            </div>
+          </div>
+
+          <div class="battle-controls">
+            <div class="battle-pair">
+              <div class="battle-algo">
+                <label>Algoritam 1:</label>
+                <select id="battleAlgo1">
+                  <option value="bubble">Bubble Sort</option>
+                  <option value="selection">Selection Sort</option>
+                  <option value="insertion">Insertion Sort</option>
+                  <option value="merge">Merge Sort</option>
+                  <option value="quick">Quick Sort</option>
+                </select>
+              </div>
+
+              <div class="battle-vs">VS</div>
+
+              <div class="battle-algo">
+                <label>Algoritam 2:</label>
+                <select id="battleAlgo2">
+                  <option value="quick">Quick Sort</option>
+                  <option value="merge">Merge Sort</option>
+                  <option value="insertion">Insertion Sort</option>
+                  <option value="selection">Selection Sort</option>
+                  <option value="bubble">Bubble Sort</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="battle-extra-options">
+              <div class="control-group battle-option">
+                <label for="battleSize">Veličina niza:</label>
+                <select id="battleSize">
+                  <option value="8">8 elemenata</option>
+                  <option value="10" selected>10 elemenata</option>
+                  <option value="15">15 elemenata</option>
+                  <option value="20">20 elemenata</option>
+                </select>
+              </div>
+
+              <div class="control-group battle-option">
+                <label for="battleInputType">Tip ulaza:</label>
+                <select id="battleInputType">
+                  <option value="random" selected>Nasumičan</option>
+                  <option value="nearly">Skoro sortiran</option>
+                  <option value="reversed">Obrnuto sortiran</option>
+                  <option value="duplicates">Mnogo duplikata</option>
+                </select>
+              </div>
+            </div>
+
+            <button onclick="startBattle()" class="btn-primary battle-start-btn">⚡ Start Battle</button>
+          </div>
+
+          <div id="battleResult" class="content-box battle-result-box">
+            Izaberi algoritme, veličinu i tip niza. Battle sada pokazuje <b>korake, poređenja, zamjene i pouku</b>, ne samo pobjednika.
+          </div>
+        </div>
+      </section>
+
+      <!-- QUIZ -->
+      <section id="quiz" class="screen quiz-screen">
+        <div class="full-panel">
+          <h1>
+            <span class="mode-icon-frame"><img src="assets/images/quiz-icon.png" class="title-icon" alt="Kviz ikonica"></span>
+            📝 Kviz znanja
+          </h1>
+
+          <div id="quizBox" class="content-box">
+            Kviz će se prikazati nakon završene animacije ili klikom na dugme Kviz.
+          </div>
+        </div>
+      </section>
+
+      <!-- LEADERBOARD -->
+      <section id="leaderboard" class="screen leaderboard-screen">
+        <div class="full-panel compact-mode-panel leaderboard-panel">
+          <div class="compact-page-header">
+            <span class="mode-icon-frame"><img src="assets/images/leaderboard-icon.png" class="title-icon compact-title-icon" alt="Rezultati ikonica"></span>
+            <div>
+              <h1>🏆 Rezultati</h1>
+              <p>Prati poene i otključana dostignuća bez nepotrebno velikih kartica.</p>
+            </div>
+          </div>
+
+          <div id="leaderboardList" class="content-box compact-content-box"></div>
+
+          <button onclick="clearProgress()" class="btn-danger compact-danger-btn">🗑️ Obriši rezultat</button>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="settings" class="screen">
+        <div class="full-panel">
+          <h1>⚙️ Postavke</h1>
+
+          <div class="settings-grid">
+            <div class="settings-card">
+              <h3>🔊 Zvuk i muzika</h3>
+
+              <select id="soundSelect" onchange="changeSound()">
+                <option value="on" selected>✅ Uključeno</option>
+                <option value="off">❌ Isključeno</option>
+              </select>
+
+            </div>
+
+            <div class="settings-card">
+              <h3>🎨 Tema</h3>
+
+              <select id="themeSelect" onchange="changeTheme()">
+                <option value="dark" selected>🌙 Dark / Neon</option>
+                <option value="light">☀️ Light</option>
+              </select>
+            </div>
+
+            <div class="settings-card settings-note-card">
+              <h3>📊 Preporuka za učenje</h3>
+              <p>Za početak koristi 5–8 elemenata i sporiju animaciju. Kada razumiješ korake, povećaj niz i probaj Challenge.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HELP -->
+      <section id="help" class="screen">
+        <div class="full-panel">
+          <h1>❓ Pomoć i pravila</h1>
+
+          <div class="content-box help-content">
+            <h2>🎯 Cilj igre</h2>
+
+            <p>
+              Cilj igre je da korisnik nauči algoritme sortiranja kroz animaciju,
+              interakciju, AI tutora, kviz, izazove i poređenje algoritama.
+            </p>
+
+            <h2>📖 Modovi igre</h2>
+
+            <ul>
+              <li><b>📚 Učenje Mode:</b> Animacija algoritma sa detaljnim objašnjenjima i mogućnostima prilagođavanja.</li>
+              <li><b>⚡ Izazov Mode:</b> Predvidi potez algoritma i testiraj svoje znanje.</li>
+              <li><b>⚔️ Duel Mode:</b> Poredi performanse dva algoritma na istom nizu.</li>
+              <li><b>📝 Quiz Mode:</b> Provjera tvog znanja o algoritmima.</li>
+              <li><b>🏆 Rezultati:</b> Poeni, dostignuća i tvoj napredak.</li>
+            </ul>
+
+            <h2>🎮 Kako igrati - Learn Mode</h2>
+
+            <ol>
+              <li>Odaberi <b>algoritam</b> iz padajućeg menija</li>
+              <li>Postavi <b>broj elemenata</b> (5, 8, 12, 20, 30)</li>
+              <li>Odaberi <b>brzinu animacije</b> (preporučeno: Normalna za početnike)</li>
+              <li>Postavi <b>raspon brojeva</b> ako želiš</li>
+              <li>Klikni <b>Novi niz</b> da generiše nasumičan niz</li>
+              <li>Klikni <b>Start</b> da vidiš animaciju</li>
+              <li>Koristi <b>Korak</b> za sporije praćenje svakog koraka</li>
+              <li>Koristi <b>Hint</b> ili <b>Objasni</b> za pomoć</li>
+              <li>Riješi <b>Kviz</b> nakon animacije za dodatne poene</li>
+            </ol>
+
+            <h2>⏯️ Kontrole animacije</h2>
+
+            <ul>
+              <li><b>▶️ Start:</b> Pokreće animaciju od početka</li>
+              <li><b>⏸️ Pauza:</b> Pauzira animaciju (klikni ponovno za nastavak)</li>
+              <li><b>⏭️ Korak:</b> Izvršava jedan korak animacije (odličan za učenje!)</li>
+              <li><b>🔙 Reset:</b> Resetuje animaciju i generiše novi niz</li>
+              <li><b>🔄 Novi niz:</b> Kreira novi niz sa trenutnim postavkama</li>
+            </ul>
+
+            <h2>🏅 Poeni i dostignuća</h2>
+
+            <p>
+              Zaradiš poene kada:
+            </p>
+            <ul>
+              <li>Završiš animaciju sortiranja (1000 - broj koraka × 5)</li>
+              <li>Riješiš challenge (10 poena)</li>
+              <li>Riješiš kviz (50 poena)</li>
+              <li>Pokreneš Algorithm Battle (25 poena)</li>
+            </ul>
+
+            <h2>💡 Savjeti za učenje</h2>
+
+            <ul>
+              <li>👶 Počni sa <b>5-8 elemenata</b> i <b>sporijom brzinom</b></li>
+              <li>🎯 Koristi <b>⏭️ Korak</b> dugme da vidiš svaki potez algoritma</li>
+              <li>📖 Čitaj <b>tutor objašnjenja</b> prije nego počneš animaciju</li>
+              <li>🔄 Ponovi isti algoritam više puta sa različitim veličinama</li>
+              <li>📊 Prouči <b>vremensku složenost</b> algoritama</li>
+              <li>🆚 Koristi <b>Battle Mode</b> da vidiš razliku između algoritama</li>
+              <li>📝 Kada razumiješ algoritam, riješi <b>Kviz</b></li>
+            </ul>
+
+            <h2>🎓 Redoslijed učenja</h2>
+
+            <ol>
+              <li><b>Bubble Sort</b> - Najjednostavniji, počni odavdje</li>
+              <li><b>Selection Sort</b> - Sličan Bubble Sortu</li>
+              <li><b>Insertion Sort</b> - Malo kompliciranije</li>
+              <li><b>Merge Sort</b> - Koristi "Divide and Conquer"</li>
+              <li><b>Quick Sort</b> - Najkompleksniji</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- SFX -->
+    <audio id="clickSound" src="assets/sfx/click.mp3" preload="auto"></audio>
+    <audio id="hoverSound" src="assets/sfx/hover.mp3" preload="auto"></audio>
+    <audio id="startSound" src="assets/sfx/start.mp3" preload="auto"></audio>
+    <audio id="pauseSound" src="assets/sfx/pause.mp3" preload="auto"></audio>
+    <audio id="resumeSound" src="assets/sfx/resume.mp3" preload="auto"></audio>
+    <audio id="resetSound" src="assets/sfx/reset.mp3" preload="auto"></audio>
+
+    <audio id="compareSound" src="assets/sfx/compare.mp3" preload="auto"></audio>
+    <audio id="swapSound" src="assets/sfx/swap.mp3" preload="auto"></audio>
+    <audio id="overwriteSound" src="assets/sfx/overwrite.mp3" preload="auto"></audio>
+
+    <audio id="correctSound" src="assets/sfx/correct.mp3" preload="auto"></audio>
+    <audio id="wrongSound" src="assets/sfx/wrong.mp3" preload="auto"></audio>
+    <audio id="hintSound" src="assets/sfx/hint.mp3" preload="auto"></audio>
+    <audio id="quizSound" src="assets/sfx/quiz.mp3" preload="auto"></audio>
+    <audio id="achievementSound" src="assets/sfx/achievement.mp3" preload="auto"></audio>
+    <audio id="levelCompleteSound" src="assets/sfx/level-complete.mp3" preload="auto"></audio>
+
+    <audio id="battleStartSound" src="assets/sfx/battle-start.mp3" preload="auto"></audio>
+    <audio id="battleWinSound" src="assets/sfx/battle-win.mp3" preload="auto"></audio>
+    <audio id="menuOpenSound" src="assets/sfx/menu-open.mp3" preload="auto"></audio>
+    <audio id="scoreSound" src="assets/sfx/score.mp3" preload="auto"></audio>
+
+    <audio id="tutorOpenSound" src="assets/sfx/tutor-open.mp3" preload="auto"></audio>
+    <audio id="tutorHappySound" src="assets/sfx/tutor-happy.mp3" preload="auto"></audio>
+    <audio id="tutorThinkingSound" src="assets/sfx/tutor-thinking.mp3" preload="auto"></audio>
+    <audio id="tutorWarningSound" src="assets/sfx/tutor-warning.mp3" preload="auto"></audio>
+    <audio id="tutorCompleteSound" src="assets/sfx/tutor-complete.mp3" preload="auto"></audio>
+
+    <audio id="bubblePopSound" src="assets/sfx/bubble-pop.mp3" preload="auto"></audio>
+    <audio id="selectionScanSound" src="assets/sfx/selection-scan.mp3" preload="auto"></audio>
+    <audio id="insertionPlaceSound" src="assets/sfx/insertion-place.mp3" preload="auto"></audio>
+    <audio id="mergeSplitSound" src="assets/sfx/merge-split.mp3" preload="auto"></audio>
+    <audio id="mergeCombineSound" src="assets/sfx/merge-combine.mp3" preload="auto"></audio>
+    <audio id="quickPivotSound" src="assets/sfx/quick-pivot.mp3" preload="auto"></audio>
+    <audio id="quickPartitionSound" src="assets/sfx/quick-partition.mp3" preload="auto"></audio>
+
+    <!-- MUSIC -->
+    <audio id="backgroundMusic" src="assets/music/background.mp3" loop preload="auto"></audio>
+    <audio id="challengeMusic" src="assets/music/challenge-music.mp3" loop preload="auto"></audio>
+    <audio id="battleMusic" src="assets/music/battle-music.mp3" loop preload="auto"></audio>
+    <audio id="quizMusic" src="assets/music/quiz-music.mp3" loop preload="auto"></audio>
+    <audio id="successMusic" src="assets/music/success-music.mp3" preload="auto"></audio>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
